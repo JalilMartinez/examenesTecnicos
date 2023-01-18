@@ -68,7 +68,6 @@ INDEX VERSION 1.131+C:\Users\Mazatl\Desktop\examenesTecnicos\.metadata\.plugins\
 1326329949.index
 3149860549.index
 685799875.index
-2983090966.index
 1302692692.index
 2518849996.index
 423039364.index
