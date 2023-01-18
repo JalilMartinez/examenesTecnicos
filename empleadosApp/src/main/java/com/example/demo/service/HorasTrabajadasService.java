@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +42,37 @@ public class HorasTrabajadasService {
 	public List<HorasTrabajadas> listaHorasTrabajadas(){
 		return  horasTrabajadasRepository.findAll();
 	}
+	public Integer totalHorasTrabajadas(HorasTrabajadasDTO data) {
+		Integer id= data.getEmployee_id();
+		LocalDate fecha_inicio = LocalDate.parse(data.getStart_date());
+		LocalDate fecha_fin = LocalDate.parse(data.getEnd_date());
+		List<HorasTrabajadas> horas=listaHorasTrabajadas();
+		int total=0;
+		if(fecha_fin.isAfter(fecha_inicio)) {
+			for(int i=0; i<horas.size();i++) {
+				HorasTrabajadas horasi = horas.get(i);
+				LocalDateTime  conv=LocalDateTime.ofInstant(horasi.getWorked_date().toInstant(), ZoneId.systemDefault());
+				LocalDate convDate=conv.toLocalDate();
+				
+				if(horasi.getEmployee_id()==id) {
+					if(convDate.isEqual(fecha_inicio)||convDate.isEqual(fecha_fin)) {
+						total+=horasi.getWorked_hours();
+					}
+					if(convDate.isBefore(fecha_fin)) {
+						if(convDate.isAfter(fecha_inicio)) {
+							total+=horasi.getWorked_hours();
+						}
+					}
+					
+				}
+			}
+		}else {
+			return data.getEmployee_id();
+		}
+		return total;
+	}
+	
+	
 	
 	private boolean realizaComprobaciones(HorasTrabajadasDTO horasN) {
 			
@@ -49,7 +81,7 @@ public class HorasTrabajadasService {
 			LocalDate fecha = LocalDate.parse(horasN.getWorked_date());
 			
 			for(int i=0; i<horas.size();i++) {
-				System.out.print(i);
+				
 				HorasTrabajadas horasi = horas.get(i);
 				
 				Date date = horasi.getWorked_date();
