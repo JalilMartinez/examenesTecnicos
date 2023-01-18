@@ -1,14 +1,15 @@
 package com.example.demo.dto;
 
-import java.sql.Date;
+
 
 public class EmpleadoDTO {
 	private Integer id;
 	private Integer gender_id;
 	private Integer job_id;
-	private Integer name;
-	private Integer last_name;
-	private Date birthdate;
+	private String name;
+	private String last_name;
+	private String birthdate;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -27,22 +28,22 @@ public class EmpleadoDTO {
 	public void setJob_id(Integer job_id) {
 		this.job_id = job_id;
 	}
-	public Integer getName() {
+	public String getName() {
 		return name;
 	}
-	public void setName(Integer name) {
+	public void setName(String name) {
 		this.name = name;
 	}
-	public Integer getLast_name() {
+	public String getLast_name() {
 		return last_name;
 	}
-	public void setLast_name(Integer last_name) {
+	public void setLast_name(String last_name) {
 		this.last_name = last_name;
 	}
-	public Date getBirthdate() {
+	public String getBirthdate() {
 		return birthdate;
 	}
-	public void setBirthdate(Date birthdate) {
+	public void setBirthdate(String birthdate) {
 		this.birthdate = birthdate;
 	}
 }
