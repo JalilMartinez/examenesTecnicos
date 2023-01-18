@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -40,9 +41,23 @@ private EmpleadoRepository empleadoRepository;
 		
 		return empleado.getId();
 	}
+	
 	public List<Empleado> listaEmpleados(){
 		return  empleadoRepository.findAll();
 	}
+	
+	public List<Empleado> listaEmpleadosPorPuesto(Integer job_id){
+		List<Empleado> empleados = listaEmpleados();
+		List<Empleado> empleadosIdJob = new ArrayList<Empleado>() ;
+		for(int i=0;i<empleados.size();i++) {
+			Empleado empleado=empleados.get(i);
+			if(empleado.getJob_id()==job_id) {
+				empleadosIdJob.add(empleado);
+			}
+		}
+		return  empleadosIdJob;
+	}
+	
 	
 	
 	
