@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.EmpleadoDTO;
 import com.example.demo.entity.Empleado;
+
 import com.example.demo.repository.EmpleadoRepository;
 
 
@@ -24,7 +25,7 @@ private EmpleadoRepository empleadoRepository;
 		this.empleadoRepository = empleadoRepository;
 	}
 	
-	public Integer guardarEmpleado(EmpleadoDTO empleadoN ) {
+	public String guardarEmpleado(EmpleadoDTO empleadoN ) {
 		boolean conf;
 		Empleado empleado = new Empleado();
 		conf = realizaComprobaciones(empleadoN);
@@ -36,10 +37,11 @@ private EmpleadoRepository empleadoRepository;
 			empleado.setLast_name(empleadoN.getLast_name());
 			empleado.setBirthdate(fecha);
 			empleado = empleadoRepository.save(empleado);
+			return "{ \"id\":"+empleado.getId()+",\"success\":"+true+"}";
 		}
 		
 		
-		return empleado.getId();
+		return "{ \"id\":"+null+",\"success\":"+false+"}";
 	}
 	
 	public List<Empleado> listaEmpleados(){
@@ -58,7 +60,9 @@ private EmpleadoRepository empleadoRepository;
 		return  empleadosIdJob;
 	}
 	
-	
+	public Empleado obtenerPorId(Integer id) {
+		return this.empleadoRepository.findById(id).get();
+	}
 	
 	
 	

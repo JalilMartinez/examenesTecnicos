@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 import com.example.demo.dto.HorasTrabajadasDTO;
-
-
 import com.example.demo.service.HorasTrabajadasService;
 
 @Controller
@@ -23,22 +21,26 @@ public class HorasTrabajadasController {
 	
 	
 	@PutMapping("/guardarHoras")
-	public ResponseEntity <Integer> guardarHoras(@RequestBody HorasTrabajadasDTO data){
-		Integer id = 0;
+	public ResponseEntity <String> guardarHoras(@RequestBody HorasTrabajadasDTO data){
+		String id = "";
 		try {
 			id=this.horasTrabajadasService.guardarHorasTrabajadas(data);
 		}catch(Exception e){
 			System.out.println("Error");
 		}
-		if(id==0) {
-			return new ResponseEntity<>(id,HttpStatus.INTERNAL_SERVER_ERROR);
-		}
 		return new ResponseEntity<>(id,HttpStatus.OK);
 	}
 	
 	@GetMapping("/totalHorasTrabajadas")
-	public ResponseEntity<Integer> totalHorasTrabajadas(@RequestBody HorasTrabajadasDTO data){
-        int total = horasTrabajadasService.totalHorasTrabajadas(data);
+	public ResponseEntity<String> totalHorasTrabajadas(@RequestBody HorasTrabajadasDTO data){
+        String resultado = horasTrabajadasService.totalHorasTrabajadas(data);
+        return new ResponseEntity<>(resultado, HttpStatus.OK);
+    }
+	
+	@GetMapping("/totalPago")
+	public ResponseEntity<String> totalPago(@RequestBody HorasTrabajadasDTO data){
+		
+        String total = horasTrabajadasService.totalPago(data);
         return new ResponseEntity<>(total, HttpStatus.OK);
     }
 }

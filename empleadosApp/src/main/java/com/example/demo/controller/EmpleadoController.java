@@ -22,16 +22,14 @@ public class EmpleadoController {
 	public EmpleadoService empleadoService;
 	
 	@PutMapping("/guardarEmpleado")
-	public ResponseEntity <Integer> guardarPersona(@RequestBody EmpleadoDTO data){
-		Integer id = 0;
+	public ResponseEntity <String> guardarPersona(@RequestBody EmpleadoDTO data){
+		String id = "";
 		try {
 			id=this.empleadoService.guardarEmpleado(data);
 		}catch(Exception e){
 			System.out.println("Error");
 		}
-		if(id==0) {
-			return new ResponseEntity<>(id,HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		
 		return new ResponseEntity<>(id,HttpStatus.OK);
 	}
 	@GetMapping("/listaEmpleadosPorPuesto")

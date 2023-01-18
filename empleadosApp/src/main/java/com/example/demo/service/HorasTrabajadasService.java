@@ -6,16 +6,23 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.HorasTrabajadasDTO;
-
+import com.example.demo.entity.Empleado;
 import com.example.demo.entity.HorasTrabajadas;
+import com.example.demo.entity.Trabajos;
 import com.example.demo.repository.HorasTrabajadasRepository;
 
 @Service
 public class HorasTrabajadasService {
 	private HorasTrabajadasRepository horasTrabajadasRepository;
+	@Autowired
+	private EmpleadoService empleadoService;
+	@Autowired
+	private TrabajosService trabajosService;
+	
 	LocalDate ahora = LocalDate.now();
 
 	
@@ -24,7 +31,7 @@ public class HorasTrabajadasService {
 		this.horasTrabajadasRepository = horasTrabajadasRepository;
 	}
 	
-	public Integer guardarHorasTrabajadas(HorasTrabajadasDTO horasN ) {
+	public String guardarHorasTrabajadas(HorasTrabajadasDTO horasN ) {
 		boolean conf=true;
 		HorasTrabajadas horas = new HorasTrabajadas();
 		conf = realizaComprobaciones(horasN);
@@ -34,15 +41,17 @@ public class HorasTrabajadasService {
 			horas.setWorked_date(fecha);
 			horas.setWorked_hours(horasN.getWorked_hours());
 			horasTrabajadasRepository.save(horas);
+			return "{ \"total_worked_hours\":"+horas.getWorked_hours()+",\"success\":"+true+"}";
 		}
+		return "{ \"total_worked_hours\":"+null+",\"success\":"+false+"}";
 		
 		
-		return horas.getId();
+		
 	}
 	public List<HorasTrabajadas> listaHorasTrabajadas(){
 		return  horasTrabajadasRepository.findAll();
 	}
-	public Integer totalHorasTrabajadas(HorasTrabajadasDTO data) {
+	public String totalHorasTrabajadas(HorasTrabajadasDTO data) {
 		Integer id= data.getEmployee_id();
 		LocalDate fecha_inicio = LocalDate.parse(data.getStart_date());
 		LocalDate fecha_fin = LocalDate.parse(data.getEnd_date());
@@ -67,12 +76,42 @@ public class HorasTrabajadasService {
 				}
 			}
 		}else {
-			return data.getEmployee_id();
+			return "{ \"total_worked_hours\":"+total+",\"success\":"+false+"}";
 		}
-		return total;
+		return "{ \"total_worked_hours\":"+total+",\"success\":"+true+"}";
 	}
 	
+	public String totalPago(HorasTrabajadasDTO data) {
+		
+		LocalDate fecha_inicio = LocalDate.parse(data.getStart_date());
+		LocalDate fecha_fin = LocalDate.parse(data.getEnd_date());
+		List<HorasTrabajadas> horas=listaHorasTrabajadas();
 	
+		int total=0;
+		if(fecha_fin.isAfter(fecha_inicio)) {
+			for(int i=0; i<horas.size();i++) {
+				Empleado empleado = empleadoService.obtenerPorId(data.getEmployee_id());
+				Trabajos trabajo = trabajosService.obtenerPorId(empleado.getJob_id());
+				HorasTrabajadas horasi = horas.get(i);
+				LocalDateTime  conv=LocalDateTime.ofInstant(horasi.getWorked_date().toInstant(), ZoneId.systemDefault());
+				LocalDate convDate=conv.toLocalDate();
+				if(horasi.getEmployee_id()==data.getEmployee_id()) {
+					if(convDate.isEqual(fecha_inicio)||convDate.isEqual(fecha_fin)) {
+						total+=trabajo.getSalary();
+					}
+					if(convDate.isBefore(fecha_fin)) {
+						if(convDate.isAfter(fecha_inicio)) {
+							total+=trabajo.getSalary();
+						}
+					}	
+				}		
+			}
+		}else {
+			return "{ \"payment\":"+total+",\"success\":"+false+"}";
+		}
+		
+		return "{ \"payment\":"+total+",\"success\":"+true+"}";
+	}
 	
 	private boolean realizaComprobaciones(HorasTrabajadasDTO horasN) {
 			
