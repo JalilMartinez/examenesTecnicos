@@ -1,12 +1,14 @@
 package com.example.demo.dto;
 
+import java.sql.Date;
+
 public class EmpleadoDTO {
 	private Integer id;
 	private Integer gender_id;
 	private Integer job_id;
 	private Integer name;
 	private Integer last_name;
-	private Integer birthdate;
+	private Date birthdate;
 	public Integer getId() {
 		return id;
 	}
@@ -37,10 +39,10 @@ public class EmpleadoDTO {
 	public void setLast_name(Integer last_name) {
 		this.last_name = last_name;
 	}
-	public Integer getBirthdate() {
+	public Date getBirthdate() {
 		return birthdate;
 	}
-	public void setBirthdate(Integer birthdate) {
+	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
 }

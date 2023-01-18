@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import java.sql.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -13,7 +15,7 @@ public class Empleado {
 	private Integer job_id;
 	private Integer name;
 	private Integer last_name;
-	private Integer birthdate;
+	private Date birthdate;
 	
 	public Integer getId() {
 		return id;
@@ -45,10 +47,10 @@ public class Empleado {
 	public void setLast_name(Integer last_name) {
 		this.last_name = last_name;
 	}
-	public Integer getBirthdate() {
+	public Date getBirthdate() {
 		return birthdate;
 	}
-	public void setBirthdate(Integer birthdate) {
+	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
 	
