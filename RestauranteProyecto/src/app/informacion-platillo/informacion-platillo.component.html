@@ -1,0 +1,27 @@
+<div class="grid"  *ngIf="articulos!=null">
+    <div class="producto" > 
+        <img class="producto__imagen" src={{articulos.meals[0].strMealThumb}} alt="Imagen Platillo">
+            <div class="producto__informacion"> 
+                <h2 class="producto__nombre">{{articulos.meals[0].strMeal}}</h2> 
+                  
+
+                <h3>Ingredientes</h3>
+                <ul >
+                    <li >{{articulos.meals[0].strIngredient1}}</li>
+                    <li >{{articulos.meals[0].strIngredient2}}</li>
+                    <li >{{articulos.meals[0].strIngredient3}}</li>
+                    <li >{{articulos.meals[0].strIngredient4}}</li>
+                    <li >{{articulos.meals[0].strIngredient5}}</li>
+                    <li >{{articulos.meals[0].strIngredient6}}</li>
+                    <li >{{articulos.meals[0].strIngredient7}}</li>
+                    <li >{{articulos.meals[0].strIngredient8}}</li>
+                    <li >{{articulos.meals[0].strIngredient9}}</li>
+                    <li >{{articulos.meals[0].strIngredient10}}</li>
+                </ul>
+                <h3>Instrucciones</h3>
+                <p>{{articulos.meals[0].strInstructions}}</p>
+
+            </div>
+            
+    </div><!--.PRODUCTO-->  
+</div><!--GRID-->

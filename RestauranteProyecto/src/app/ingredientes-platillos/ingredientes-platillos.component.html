@@ -1,0 +1,12 @@
+<p>ingredientes-platillos works!</p>
+<div class="grid" *ngIf="articulos!=null">
+    <div class="producto" *ngFor="let art of data[0]"> 
+        
+            <img class="producto__imagen" src={{art.strMealThumb}} alt="">  
+            <div class="producto__informacion"> 
+                <p class="producto__nombre">{{art.strMeal}}</p> 
+            </div>
+        
+    </div><!-- .PRODUCTO -->
+   
+</div><!--GRID-->

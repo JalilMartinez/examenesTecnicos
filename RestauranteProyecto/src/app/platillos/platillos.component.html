@@ -1,1 +1,16 @@
-<p>platillos works!</p>
+<app-barra></app-barra>
+<h1>Platillos</h1>
+
+    <div class="grid" *ngIf="articulos!=null;else espera">
+        <div class="producto" *ngFor="let art of data[0]"> 
+            
+                <img class="producto__imagen" src={{art.strCategoryThumb}} alt="">  
+                <div class="producto__informacion"> 
+                    <p class="producto__nombre">{{art.strCategory}}</p> 
+                </div>
+            
+        </div><!-- .PRODUCTO -->
+       
+    </div><!--GRID-->
+
+<ng-template #espera></ng-template>

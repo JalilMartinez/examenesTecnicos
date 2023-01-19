@@ -1,1 +1,20 @@
-<p>ingredientes works!</p>
+<app-barra></app-barra>
+<h1>Ingredientes</h1>
+
+    <div class="grid" *ngIf="informacion!=true;else espera">
+        <div class="producto" *ngFor="let art of data[0]"> 
+                <div class="producto__informacion"> 
+                    <a (click)="informacionPlatillo(art.strIngredient)"> <p class="producto__nombre">{{art.strIngredient}}</p> </a>
+                </div>  
+        </div><!-- .PRODUCTO -->
+       
+    </div><!--GRID-->
+
+    <ng-template #espera>
+        <button (click)="regresa()">Regresar</button>
+        <br>
+        <div class="grid" *ngIf="articulos!=null">
+                <app-ingredientes-platillos [id]="ingrediente"></app-ingredientes-platillos>
+         
+        </div>
+    </ng-template>

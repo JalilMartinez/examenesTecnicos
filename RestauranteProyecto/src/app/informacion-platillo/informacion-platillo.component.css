@@ -11,10 +11,7 @@
 a{
     text-decoration: none;
 }
-body{
-    
-    background-size: 100%;
-}
+
 header, .formulario{
     text-align: center;
     align-items: center;
@@ -24,9 +21,12 @@ h1{
     font-size: 4rem;
     color: rgb(0, 0, 0);
 }
-h1,h2,h3{
+h1,h2{
     text-align: center;
     
+}
+h3{
+    text-align: left;
 }
 
 
@@ -40,14 +40,11 @@ h1,h2,h3{
     row-gap: 2rem;  resumida en la siguiente linea*/
     gap: 2rem;
 }
-@media (min-width:540px) {
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
 @media (min-width:768px) {
     .grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(1, 1fr);
+        justify-content: center;
+        justify-items: center;
     }
 }
 /*productos*/
@@ -55,40 +52,38 @@ h1,h2,h3{
     background-color: var(--primarioOscuro);
     padding: 1rem;
 }
-.producto__nombre{
-    font-size: 4rem;
-}
 .producto__imagen{
-    width: 100%;
-    
+    width: 80%;
+    padding-left: 5rem;
 }
 @media (min-width:540px) {
     .producto__imagen {
-        width: 70%;
-        
-    }
-    .producto__nombre{
-        font-size: 2rem;
+        width: 75%;
+        padding-left: 10rem;
     }
 }
 @media (min-width:768px) {
     .producto__imagen {
-        width: 80%;
-      
-    }
-    .producto__nombre{
-        font-size: 2rem;
+        width: 75%;
+        padding-left: 15rem;
     }
 }
-@media (min-width:1080px) {
+@media (min-width:1040px) {
     .producto__imagen {
-        width: 100%;
-       
+        width: 70%;
+        padding-left: 15rem;
+    }
+}
+@media (min-width:1200px) {
+    .producto__imagen {
+        width: 65%;
+        padding-left: 32rem;
     }
 }
 
-
-
+.producto__nombre{
+    font-size: 2.5rem;
+}
 .producto__precio{
     font-size: 2.8rem;
     color: var(--secundario);
