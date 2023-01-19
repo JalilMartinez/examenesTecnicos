@@ -1,0 +1,13 @@
+h1{
+    text-align: center;
+    background-color: rgb(201, 245, 245);
+    padding: 20px 40px
+}
+.contenedor{
+    border-radius: .5rem;
+    border-top: 3px solid rgb(9, 30, 49);
+    border-bottom: 3px solid rgb(9, 30, 49);
+    border-left: 3px solid rgb(9, 30, 49);
+    border-right: 3px solid rgb(9, 30, 49);
+    padding: 20px 40px
+}

@@ -1,0 +1,91 @@
+:root{
+    --primario: #962bdd;
+    --primarioOscuro: #13558166;
+    --secundario: #ffffff;
+    --secundarioOscuro: rgb(233,287,2);
+    --blanco: rgb(255, 255, 255);
+    --negro: #000;
+
+    --fuentePrincipal: font-family: 'Staatliches', cursive;
+}
+a{
+    text-decoration: none;
+}
+
+header, .formulario{
+    text-align: center;
+    align-items: center;
+    
+}
+h1{
+    font-size: 4rem;
+    color: rgb(0, 0, 0);
+}
+h1,h2,h3{
+    text-align: center;
+    
+}
+
+
+
+
+
+.grid{
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    /*column-gap: 2rem;
+    row-gap: 2rem;  resumida en la siguiente linea*/
+    gap: 2rem;
+}
+@media (min-width:768px) {
+    .grid {
+        grid-template-columns: repeat(1, 1fr);
+        justify-content: center;
+        justify-items: center;
+    }
+}
+/*productos*/
+.producto{
+    background-color: var(--primarioOscuro);
+    padding: 1rem;
+}
+.producto__imagen{
+    width: 100%;
+    
+}
+@media (min-width:540px) {
+    .producto__imagen {
+        width: 80%;
+        padding-left: 9rem;
+    }
+}
+@media (min-width:768px) {
+    .producto__imagen {
+        width: 80%;
+        padding-left: 9rem;
+    }
+}
+@media (min-width:1080px) {
+    .producto__imagen {
+        width: 80%;
+        padding-left: 9rem;
+    }
+}
+
+.producto__nombre{
+    font-size: 2.5rem;
+}
+.producto__precio{
+    font-size: 2.8rem;
+    color: var(--secundario);
+}
+.producto__nombre, .producto__precio{
+    font-family: var(--fuentePrincipal);
+    margin: 1rem 0;
+    text-align: center;
+    line-height: 1.2;
+}
+
+
+
+
