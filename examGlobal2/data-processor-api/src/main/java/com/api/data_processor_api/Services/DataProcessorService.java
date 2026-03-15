@@ -1,5 +1,6 @@
 package com.api.data_processor_api.Services;
 
+import com.api.data_processor_api.Entities.EntityToUpdate;
 import com.api.data_processor_api.Entities.TransactionRequest;
 import com.api.data_processor_api.Entities.TransactionResponse;
 import com.api.data_processor_api.Entities.TransactionEntity;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
 
+import java.util.List;
 import java.util.Random;
 
 
@@ -33,5 +35,19 @@ public class DataProcessorService {
             referencia = String.format("%06d", new Random().nextInt(1000000));
         }while(transactionRepository.existsByReferencia(referencia));
         return referencia;
+    }
+
+    public void getAllTransactions(List<TransactionEntity> transactionEntityList){
+        transactionEntityList.addAll(transactionRepository.findAll());
+    }
+
+    public void updateEstatusTransaction( EntityToUpdate entityToUpdate, TransactionResponse transactionResponse){
+        TransactionEntity transactionEntity = transactionRepository.findById(entityToUpdate.getId()).orElseThrow(()-> new RuntimeException("Transaccion no encontrada"));
+        transactionEntity.setEstatus(entityToUpdate.getEstatus());
+        TransactionEntity transactionSaved = transactionRepository.save(transactionEntity);
+        transactionResponse.setId(transactionSaved.getId());
+        transactionResponse.setEstatus(transactionSaved.getEstatus());
+        transactionResponse.setOperacion(transactionSaved.getOperacion());
+        transactionResponse.setReferencia(transactionSaved.getReferencia());
     }
 }
