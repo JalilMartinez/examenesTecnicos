@@ -24,7 +24,6 @@ public class DataProcessorController {
     private ResponseEntity<TransactionResponse> processTransaction (@RequestBody TransactionRequest transactionRequest){
         TransactionResponse transactionResponse = new TransactionResponse();
         dataProcessorService.doTransaction(transactionResponse,transactionRequest);
-        System.out.println(transactionResponse.getId());
         return ResponseEntity.ok(transactionResponse);
     }
 

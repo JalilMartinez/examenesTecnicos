@@ -16,10 +16,10 @@ function Login() {
 
     try {
       // Codificar la contraseña con Bcrypt
-      const hashedPassword = await bcrypt.hash(password, 10); // 10 es el número de rondas
+      const hashedPassword = await bcrypt.hash(password, 10); 
       console.log(hashedPassword);
       
-      const response = await fetch('http://localhost:8081/auth-api/authenticateUser', { // Reemplaza con la URL correcta
+      const response = await fetch('http://localhost:8081/auth-api/authenticateUser', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,7 +35,6 @@ function Login() {
       if (!data) {
         throw new Error('Credenciales incorrectas');
       }
-      // Aquí puedes manejar el token o redirigir
       localStorage.setItem('authenticated', 'true');
       navigate('/dashboard/register');
     } catch (err) {

@@ -16,7 +16,6 @@ public class UserService {
 
         User user = userRepository.findAllByUserName(userRequest.getUserName());
         BCryptPasswordEncoder enconder = new BCryptPasswordEncoder();
-        System.out.println(user.getPsw());
         return enconder.matches( user.getPsw(),userRequest.getPsw());
     }
 

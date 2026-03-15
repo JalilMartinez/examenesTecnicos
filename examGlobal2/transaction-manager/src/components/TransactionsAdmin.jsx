@@ -10,7 +10,6 @@ function TransactionsAdmin() {
   const [sortDirection, setSortDirection] = useState('asc');
 
   useEffect(() => {
-    // Reemplaza con la URL correcta de la API
     fetch('http://localhost:8081/processor-transaction-api/getAllTransactions')
       .then(response => {
         if (!response.ok) {
@@ -54,7 +53,6 @@ function TransactionsAdmin() {
     if (!transaction) return;
 
     try {
-      // Reemplaza con la URL correcta para cancelar
       const response = await fetch(`http://localhost:8081/processor-transaction-api/updateEstatusTransaction`, {
         method: 'PATCH',
         headers: {
@@ -63,7 +61,7 @@ function TransactionsAdmin() {
         body: JSON.stringify({
           id: transaction.id,
           referencia: transaction.referencia,
-          estatus: 'Cancelada' // O el estatus correcto para cancelada
+          estatus: 'Cancelada' 
         }),
       });
       if (!response.ok) {
