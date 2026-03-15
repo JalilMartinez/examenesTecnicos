@@ -1,4 +1,4 @@
-package com.api.validator_api.entities;
+package com.api.data_processor_api.Entities;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;

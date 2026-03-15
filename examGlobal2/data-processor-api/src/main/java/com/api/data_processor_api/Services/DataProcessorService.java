@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
 
+import java.util.Random;
+
 
 @Service
 public class DataProcessorService {
@@ -15,23 +17,21 @@ public class DataProcessorService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public void getOperation(TransactionResponse transactionResponse, String operRequestJson){
-        ObjectMapper objectMapper = new ObjectMapper();
-        TransactionRequest transactionRequest = new TransactionRequest();
-        try{
-            transactionRequest =objectMapper.readValue(operRequestJson, TransactionRequest.class);
-        }catch (Exception e){
-            System.out.println(e);
-        }
-
-
+    public void doTransaction(TransactionResponse transactionResponse, TransactionRequest transactionRequest){
+        String referencia = generateReferencia();
+        TransactionEntity entity = new TransactionEntity(transactionRequest,referencia);
+        TransactionEntity savedTransaction = transactionRepository.save(entity);
+        transactionResponse.setReferencia(savedTransaction.getReferencia());
+        transactionResponse.setOperacion(savedTransaction.getOperacion());
+        transactionResponse.setEstatus(savedTransaction.getEstatus());
+        transactionResponse.setId(savedTransaction.getId());
     }
 
-    public void getSum(TransactionResponse transactionResponse, TransactionRequest transactionRequest, String operRequestJson){
-        double sumaR= transactionRequest.getNumero_1()+ transactionRequest.getNumero_2();
-        transactionRepository.save(new TransactionEntity(transactionRequest.getId(),operRequestJson,sumaR));
-        TransactionEntity transactionEntity = transactionRepository.getReferenceById((long) transactionRequest.getId());
-        transactionResponse.setResultado(transactionEntity.getResultado());
-        transactionResponse.setId(transactionEntity.getId());
+    private String generateReferencia (){
+        String referencia = "";
+        do{
+            referencia = String.format("%06d", new Random().nextInt(1000000));
+        }while(transactionRepository.existsByReferencia(referencia));
+        return referencia;
     }
 }

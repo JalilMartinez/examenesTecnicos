@@ -1,25 +1,25 @@
-package com.exam.Calculator.Controller;
+package com.api.data_processor_api.Controller;
 
-import com.exam.Calculator.Entities.OperRequest;
-import com.exam.Calculator.Entities.OperResponse;
-import com.exam.Calculator.Services.OperService;
+
+import com.api.data_processor_api.Entities.TransactionRequest;
+import com.api.data_processor_api.Entities.TransactionResponse;
+import com.api.data_processor_api.Services.DataProcessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/Calculatorapi")
-public class SumController {
+@RequestMapping("/processor-transaction-api")
+public class DataProcessorController {
 
     @Autowired
-    OperService operService;
+    DataProcessorService dataProcessorService;
 
     @PostMapping("")
-    private ResponseEntity<OperResponse> sum (@RequestBody String operRequestJson){
-        OperResponse operResponse = new OperResponse();
-        operService.getOperation(operResponse,operRequestJson);
-        return ResponseEntity.ok(operResponse);
+    private ResponseEntity<TransactionResponse> processTransaction (@RequestBody TransactionRequest transactionRequest){
+        TransactionResponse transactionResponse = new TransactionResponse();
+        dataProcessorService.doTransaction(transactionResponse,transactionRequest);
+        System.out.println(transactionResponse.getId());
+        return ResponseEntity.ok(transactionResponse);
     }
 }

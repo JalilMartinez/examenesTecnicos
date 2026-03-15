@@ -16,13 +16,20 @@ public class ValidationService {
 
     //revisar el uso del trows, tambien pensar en pasar el generar sha a otro servico
     public void processTransaction(TransactionRequest transactionRequest, TransactionResponse transactionResponse) throws NoSuchAlgorithmException {
+
         if (validateKey(transactionRequest)){
-            transactionResponse=feingClient.processTransaction(transactionRequest);
+            TransactionResponse transactionResponseN = feingClient.processTransaction(transactionRequest);
+
+            transactionResponse.setId(transactionResponseN.getId());
+            transactionResponse.setOperacion(transactionResponseN.getOperacion());
+            transactionResponse.setEstatus(transactionResponseN.getEstatus());
+            transactionResponse.setReferencia(transactionResponseN.getReferencia());
         }
     }
     private boolean validateKey(TransactionRequest transactionRequest) throws NoSuchAlgorithmException {
         String forGenerateKey =transactionRequest.getOperacion()+"|"+transactionRequest.getImporte()+"|"+transactionRequest.getCliente();
         String newsha = generateSha(forGenerateKey);
+        System.out.println(newsha);
         return newsha.equals(transactionRequest.getFirma());
     }
 

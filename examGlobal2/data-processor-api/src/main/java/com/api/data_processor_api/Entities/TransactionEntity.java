@@ -16,9 +16,19 @@ public class TransactionEntity {
     private String operacion;
     private BigDecimal importe;
     private String cliente;
-    private Long referencia;
-    private String status;
+    private String referencia;
+    private String estatus;
     private String secreto;
+
+    public TransactionEntity(){}
+    public TransactionEntity(TransactionRequest transactionRequest, String referencia){
+        setEstatus("Aprobada");
+        setOperacion(transactionRequest.getOperacion());
+        setSecreto(transactionRequest.getFirma());
+        setImporte(transactionRequest.getImporte());
+        setCliente(transactionRequest.getCliente());
+        setReferencia(referencia);
+    }
 
 
 }
