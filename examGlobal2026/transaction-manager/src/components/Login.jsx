@@ -15,16 +15,13 @@ function Login() {
     setError('');
 
     try {
-      // Codificar la contraseña con Bcrypt
-      const hashedPassword = await bcrypt.hash(password, 10); 
-      console.log(hashedPassword);
-      
+            
       const response = await fetch('http://localhost:8081/auth-api/authenticateUser', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userName, psw: hashedPassword }),
+        body: JSON.stringify({ userName, psw: password }),
       });
 
       if (!response.ok) {
