@@ -79,7 +79,7 @@ function TransactionsAdmin() {
           color="error"
           onClick={() => handleCancel(params.row.id)}
         >
-          Cancel
+          Cancelar
         </Button>
       ),
     },
