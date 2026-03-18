@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { DataGrid } from "@mui/x-data-grid";
+import Button from "@mui/material/Button";
 
 function TransactionsAdmin() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
-  const [sortField, setSortField] = useState('id');
-  const [sortDirection, setSortDirection] = useState('asc');
 
   useEffect(() => {
     fetch('http://localhost:8081/processor-transaction-api/getAllTransactions')
@@ -27,26 +25,6 @@ function TransactionsAdmin() {
       });
   }, []);
 
-  const sortedTransactions = [...transactions].sort((a, b) => {
-    let field = sortField;
-    if (sortField === 'venta') field = 'importe';
-    let aVal = a[field];
-    let bVal = b[field];
-    if (field === 'id' || field === 'importe') {
-      aVal = Number(aVal);
-      bVal = Number(bVal);
-    }
-    if (sortDirection === 'asc') {
-      return aVal > bVal ? 1 : -1;
-    } else {
-      return aVal < bVal ? 1 : -1;
-    }
-  });
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = sortedTransactions.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(sortedTransactions.length / itemsPerPage);
 
   const handleCancel = async (id) => {
     const transaction = transactions.find(t => t.id === id);
@@ -77,10 +55,6 @@ function TransactionsAdmin() {
     }
   };
 
-  const handleItemsPerPageChange = (e) => {
-    setItemsPerPage(Number(e.target.value));
-    setCurrentPage(1);
-  };
 
   if (loading) {
     return <div>Cargando...</div>;
@@ -90,122 +64,45 @@ function TransactionsAdmin() {
     return <div>Error: {error}</div>;
   }
 
+  const columns = [
+    { field: "id", headerName: "ID", flex: 0.5 },
+    { field: "estatus", headerName: "Estatus", flex: 1 },
+    { field: "referencia", headerName: "Referencia", flex: 1 },
+    { field: "importe", headerName: "Importe", flex: 0.7 },
+    {
+      field: "acciones",
+      headerName: "Acciones",
+      flex: 0.8,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => handleCancel(params.row.id)}
+        >
+          Cancel
+        </Button>
+      ),
+    },
+  ];
+
   return (
     <div>
+       
       <h2>Administrar Transacciones</h2>
-      <div style={{ marginBottom: '20px' }}>
-        <label>Registros por página: </label>
-        <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-          <option value={20}>20</option>
-        </select>
+      <div>
+        <div style={{ height: 500, width: "100%" }}>
+          <DataGrid
+            rows={transactions}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5, 10, 20]}
+            pagination
+            resizable
+          />
+        </div>
+
       </div>
-      <table border="1" style={{ width: '100%', textAlign: 'left' }}>
-        <thead>
-          <tr>
-            <th>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span>ID</span>
-                <select
-                  onChange={(e) => {
-                    if (e.target.value) {
-                      setSortField('id');
-                      setSortDirection(e.target.value);
-                    }
-                  }}
-                  value={sortField === 'id' ? sortDirection : ''}
-                  style={{ marginLeft: '5px' }}
-                >
-                  <option value="">-</option>
-                  <option value="asc">↑</option>
-                  <option value="desc">↓</option>
-                </select>
-              </div>
-            </th>
-            <th>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span>Estatus</span>
-                <select
-                  onChange={(e) => {
-                    if (e.target.value) {
-                      setSortField('estatus');
-                      setSortDirection(e.target.value);
-                    }
-                  }}
-                  value={sortField === 'estatus' ? sortDirection : ''}
-                  style={{ marginLeft: '5px' }}
-                >
-                  <option value="">-</option>
-                  <option value="asc">↑</option>
-                  <option value="desc">↓</option>
-                </select>
-              </div>
-            </th>
-            <th>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span>Referencia</span>
-                <select
-                  onChange={(e) => {
-                    if (e.target.value) {
-                      setSortField('referencia');
-                      setSortDirection(e.target.value);
-                    }
-                  }}
-                  value={sortField === 'referencia' ? sortDirection : ''}
-                  style={{ marginLeft: '5px' }}
-                >
-                  <option value="">-</option>
-                  <option value="asc">↑</option>
-                  <option value="desc">↓</option>
-                </select>
-              </div>
-            </th>
-            <th>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span>Importe</span>
-                <select
-                  onChange={(e) => {
-                    if (e.target.value) {
-                      setSortField('venta');
-                      setSortDirection(e.target.value);
-                    }
-                  }}
-                  value={sortField === 'venta' ? sortDirection : ''}
-                  style={{ marginLeft: '5px' }}
-                >
-                  <option value="">-</option>
-                  <option value="asc">↑</option>
-                  <option value="desc">↓</option>
-                </select>
-              </div>
-            </th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map(item => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.estatus}</td>
-              <td>{item.referencia}</td>
-              <td>{item.importe}</td>
-              <td>
-                <button onClick={() => handleCancel(item.id)}>Cancelar</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div style={{ marginTop: '20px' }}>
-        <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
-          Anterior
-        </button>
-        <span style={{ margin: '0 10px' }}>Página {currentPage} de {totalPages}</span>
-        <button onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>
-          Siguiente
-        </button>
-      </div>
+     
     </div>
   );
 }
