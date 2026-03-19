@@ -35,6 +35,11 @@ function Login() {
 
       const data = await response.json();
       if (!data) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Credenciales incorrectas',
+        });
         throw new Error('Credenciales incorrectas');
       }
       localStorage.setItem('authenticated', 'true');
@@ -71,7 +76,7 @@ function Login() {
         <button type="submit" disabled={loading}>
           {loading ? 'Cargando...' : 'Iniciar Sesión'}
         </button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        
       </form>
     </div>
   );
