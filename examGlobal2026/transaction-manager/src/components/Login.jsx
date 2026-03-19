@@ -40,7 +40,7 @@ function Login() {
           title: 'Error',
           text: 'Credenciales incorrectas',
         });
-        throw new Error('Credenciales incorrectas');
+        throw new Error('Credenciales incorrectass');
       }
       localStorage.setItem('authenticated', 'true');
       navigate('/dashboard/register');
