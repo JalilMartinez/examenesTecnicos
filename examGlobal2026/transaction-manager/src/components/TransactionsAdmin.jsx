@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
+import Swal from "sweetalert2";
 
 function TransactionsAdmin() {
   const [transactions, setTransactions] = useState([]);
@@ -43,6 +44,11 @@ function TransactionsAdmin() {
         }),
       });
       if (!response.ok) {
+        swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo cancelar la transacción',
+        });
         throw new Error('Error al cancelar la transacción');
       }
       const updatedTransaction = await response.json();
@@ -50,8 +56,17 @@ function TransactionsAdmin() {
       setTransactions(transactions.map(t => 
         t.id === id ? { ...t, estatus: updatedTransaction.estatus } : t
       ));
+      Swal.fire({
+        icon: 'success',
+        title: 'Transacción cancelada',
+        text: `La transacción con referencia ${transaction.referencia} ha sido cancelada.`,
+      });
     } catch (err) {
-      alert('Error al cancelar: ' + err.message);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Error al cancelar la transacción',
+      });
     }
   };
 

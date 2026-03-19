@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+import Swal from "sweetalert2"
 function TransactionsRegister() {
   const [operacion, setOperacion] = useState('')
   const [importe, setImporte] = useState('')
@@ -21,7 +21,7 @@ function TransactionsRegister() {
       firma
     }
     try {
-      const response = await fetch('http://localhost:8081/processor-transaction-api', {
+      const response = await fetch('http://localhost:8080/save-transaction-api', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -30,15 +30,31 @@ function TransactionsRegister() {
       })
       if (response.ok) {
         const result = await response.json()
-        console.log('Transaction processed:', result)
+        Swal.fire({
+          icon: 'success',
+          title: 'Transacción registrada',
+          text: `ID de transacción: ${result.id}`,
+        });
         // Reset form or show success message
         setOperacion('')
         setImporte('')
         setCliente('')
       } else {
-        console.error('Error processing transaction')
+        const errorData = await response.json();
+        let errorMessages = errorData.errors.map(err => `Campo: ${err.field}, Valor: ${err.rejectedValue}, Mensaje: ${err.defaultMessage}`).join('\n');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al registrar la transacción',
+          text: errorMessages,
+        });
+        throw new Error('Error al registrar la transacción');
       }
     } catch (error) {
+      swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Error al registrar la transacción',
+      });
       console.error('Error:', error)
     }
   }

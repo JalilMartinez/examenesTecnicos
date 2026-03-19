@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import bcrypt from 'bcryptjs';
+import Swal from "sweetalert2";
 
 function Login() {
   const [userName, setUser] = useState('');
@@ -25,6 +25,11 @@ function Login() {
       });
 
       if (!response.ok) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Credenciales incorrectas',
+        });
         throw new Error('Credenciales incorrectas');
       }
 

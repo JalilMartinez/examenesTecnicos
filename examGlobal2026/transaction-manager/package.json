@@ -17,7 +17,8 @@
     "bcryptjs": "^3.0.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "react-router-dom": "^6.30.3"
+    "react-router-dom": "^6.30.3",
+    "sweetalert2": "^11.26.23"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
