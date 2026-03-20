@@ -23,17 +23,17 @@ function Login() {
         },
         body: JSON.stringify({ userName, psw: password }),
       });
-
+      const data = await response.json();
       if (!response.ok) {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'Credenciales incorrectas',
+          text: data.message,
         });
         throw new Error('Credenciales incorrectas');
       }
 
-      const data = await response.json();
+      
       if (!data) {
         Swal.fire({
           icon: 'error',

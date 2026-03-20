@@ -1,7 +1,7 @@
 package com.api.data_processor_api;
 
-import com.api.data_processor_api.Entities.User;
-import com.api.data_processor_api.Repository.UserRepository;
+import com.api.data_processor_api.model.entity.User;
+import com.api.data_processor_api.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,7 +1,7 @@
 package com.api.validator_api.controller;
 
-import com.api.validator_api.entities.TransactionRequest;
-import com.api.validator_api.entities.TransactionResponse;
+import com.api.validator_api.model.dto.TransactionOutcome;
+import com.api.validator_api.model.dto.TransactionRequest;
 import com.api.validator_api.service.ValidationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -19,9 +20,15 @@ public class ValidatorController {
     ValidationService validationService;
 
     @PostMapping("")
-    private ResponseEntity<TransactionResponse> doTransaction(@Valid @RequestBody TransactionRequest transactionRequest) throws NoSuchAlgorithmException {
-        TransactionResponse transactionResponse = new TransactionResponse();
-        validationService.processTransaction(transactionRequest,transactionResponse);
-        return ResponseEntity.ok(transactionResponse);
+    public ResponseEntity<?> doTransaction(@Valid @RequestBody TransactionRequest transactionRequest) throws NoSuchAlgorithmException {
+
+        TransactionOutcome transactionOutcome = validationService.processTransaction(transactionRequest);
+        if (!transactionOutcome.isCorrect()){
+            return ResponseEntity.badRequest().body( Map.of(
+                    "mensaje",transactionOutcome.getMessage(),
+                    "data", transactionOutcome.getTransactionResponse()
+            ));
+        }
+        return ResponseEntity.ok(transactionOutcome.getTransactionResponse());
     }
 }

@@ -41,13 +41,17 @@ function TransactionsRegister() {
         setCliente('')
       } else {
         const errorData = await response.json();
-        let errorMessages = errorData.errors.map(err => `Campo: ${err.field}, Valor: ${err.rejectedValue}, Mensaje: ${err.defaultMessage}`).join('\n');
+        let mensajeMostrar = 'Ocurrió un error en la validación';
+        if (errorData.errores) {
+            const listaMensajes = Object.values(errorData.errores); 
+            mensajeMostrar = listaMensajes.join('\n'); 
+        }
         Swal.fire({
-          icon: 'error',
-          title: 'Error al registrar la transacción',
-          text: errorMessages,
+            icon: 'error',
+            title: 'Datos no válidos',
+            text: mensajeMostrar,
+            confirmButtonText: 'Corregir'
         });
-        throw new Error('Error al registrar la transacción');
       }
     } catch (error) {
       swal.fire({

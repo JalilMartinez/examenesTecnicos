@@ -12,6 +12,11 @@ function TransactionsAdmin() {
     fetch('http://localhost:8081/processor-transaction-api/getAllTransactions')
       .then(response => {
         if (!response.ok) {
+           swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo obtener las transacciones',
+          });
           throw new Error('Error al cargar los datos');
         }
         return response.json();
@@ -21,6 +26,11 @@ function TransactionsAdmin() {
         setLoading(false);
       })
       .catch(err => {
+          swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo obtener las transacciones',
+          });
         setError(err.message);
         setLoading(false);
       });
