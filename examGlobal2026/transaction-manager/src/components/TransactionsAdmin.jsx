@@ -7,35 +7,39 @@ function TransactionsAdmin() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(5);
+  const [rowCount, setRowCount] = useState(0);
+  
+  const fetchTransactions = () => {
+    setLoading(true);
 
-  useEffect(() => {
-    fetch('http://localhost:8081/processor-transaction-api/getAllTransactions')
+    fetch(`http://localhost:8081/processor-transaction-api/getAllTransactions?page=${page}&size=${pageSize}`)
       .then(response => {
         if (!response.ok) {
-           swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudo obtener las transacciones',
-          });
           throw new Error('Error al cargar los datos');
         }
         return response.json();
       })
       .then(data => {
-        setTransactions(data);
+        setTransactions(data.entityList);     // lista
+        setRowCount(data.totalElements);      // total
         setLoading(false);
       })
       .catch(err => {
-          swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudo obtener las transacciones',
-          });
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo obtener las transacciones',
+        });
         setError(err.message);
         setLoading(false);
       });
-  }, []);
+  };
 
+  useEffect(() => {
+    fetchTransactions();
+  }, [page, pageSize]);
 
   const handleCancel = async (id) => {
     const transaction = transactions.find(t => t.id === id);
@@ -119,10 +123,16 @@ function TransactionsAdmin() {
           <DataGrid
             rows={transactions}
             columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5, 10, 20]}
             pagination
-            resizable
+            paginationMode="server"
+            rowCount={rowCount}
+            paginationModel={{ page, pageSize }} 
+            onPaginationModelChange={(model) => {
+              setPage(model.page);
+              setPageSize(model.pageSize);
+            }}
+            pageSizeOptions={[5, 10, 20]}
+            loading={loading}
           />
         </div>
 
