@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 @RestController
@@ -20,7 +19,7 @@ public class ValidatorController {
     ValidationService validationService;
 
     @PostMapping("")
-    public ResponseEntity<?> doTransaction(@Valid @RequestBody TransactionRequest transactionRequest) throws NoSuchAlgorithmException {
+    public ResponseEntity<?> doTransaction(@Valid @RequestBody TransactionRequest transactionRequest) {
 
         TransactionOutcome transactionOutcome = validationService.processTransaction(transactionRequest);
         if (!transactionOutcome.isCorrect()){
