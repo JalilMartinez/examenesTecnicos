@@ -7,7 +7,6 @@ import com.api.dataprocessor.model.TransactionOutcomeResponse;
 import com.api.dataprocessor.model.dto.*;
 import com.api.dataprocessor.services.DataProcessorService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/processor-transaction-api")
+@RequestMapping("/processortransactionapi")
 public class DataProcessorController {
 
-    @Autowired
-    DataProcessorService dataProcessorService;
+    private final DataProcessorService dataProcessorService;
+
+    public DataProcessorController (DataProcessorService dataProcessorService){
+        this.dataProcessorService = dataProcessorService;
+    }
 
     @PostMapping("")
     public ResponseEntity<?> processTransaction (@Valid @RequestBody TransactionRequestDto transactionRequestDto){

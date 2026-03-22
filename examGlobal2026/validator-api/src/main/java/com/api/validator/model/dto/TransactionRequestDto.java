@@ -12,7 +12,7 @@ public class TransactionRequestDto {
     @Size(max=50,message = "operacion no debe superar los 50 caracteres")
     private String operacion;
 
-    @NotNull(message="immporte es obligatorio")
+    @NotNull(message="importe es obligatorio")
     @DecimalMin(value = "0.0", inclusive = false, message = "importe debe ser mayor a 0")
     @Digits(integer = 10, fraction = 3, message = "El importe debe tener maximo 10 enteros y 3 decimales")
     private BigDecimal importe;

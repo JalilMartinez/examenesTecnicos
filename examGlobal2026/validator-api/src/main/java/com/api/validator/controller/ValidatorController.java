@@ -4,7 +4,6 @@ import com.api.validator.model.TransactionOutcome;
 import com.api.validator.model.dto.TransactionRequestDto;
 import com.api.validator.service.ValidationService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +11,14 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
-@RequestMapping("/save-transaction-api")
+@RequestMapping("/savetransactionapi")
 public class ValidatorController {
 
-    @Autowired
-    ValidationService validationService;
+    private final ValidationService validationService;
+
+    public ValidatorController(ValidationService validationService){
+        this.validationService = validationService;
+    }
 
     @PostMapping("")
     public ResponseEntity<?> doTransaction(@Valid @RequestBody TransactionRequestDto transactionRequestDto) {

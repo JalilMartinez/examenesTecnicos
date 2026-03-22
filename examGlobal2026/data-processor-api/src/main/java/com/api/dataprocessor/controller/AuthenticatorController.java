@@ -6,17 +6,20 @@ import com.api.dataprocessor.model.UserOutcome;
 import com.api.dataprocessor.model.dto.UserRequestDto;
 import com.api.dataprocessor.services.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth-api")
+@RequestMapping("/auth")
 public class AuthenticatorController {
-    @Autowired
-    UserService userService;
+
+    private final UserService userService;
+
+    public AuthenticatorController(UserService userService){
+        this.userService = userService;
+    }
 
     @PostMapping("/authenticateUser")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody UserRequestDto user){

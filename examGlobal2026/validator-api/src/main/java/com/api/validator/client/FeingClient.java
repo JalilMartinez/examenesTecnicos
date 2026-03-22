@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "api-processor",
-        url = "http://localhost:8081/processor-transaction-api",
+        url = "http://localhost:8081/processortransactionapi",
         configuration = FeingErrorDecoder.class)
 public interface FeingClient {
 

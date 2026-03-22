@@ -3,16 +3,19 @@ package com.api.validator.service;
 import com.api.validator.client.FeingClient;
 import com.api.validator.model.TransactionOutcome;
 import com.api.validator.model.dto.TransactionRequestDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class ValidationService {
-    @Autowired
-    FeingClient feingClient;
-    @Autowired
-    HashService hashService;
+
+    private final FeingClient feingClient;
+    private final HashService hashService;
+
+    public ValidationService(FeingClient feingClient, HashService hashService){
+        this.feingClient = feingClient;
+        this.hashService = hashService;
+    }
 
     public TransactionOutcome processTransaction(TransactionRequestDto transactionRequestDto) {
         TransactionOutcome transactionOutcome = new TransactionOutcome(true);

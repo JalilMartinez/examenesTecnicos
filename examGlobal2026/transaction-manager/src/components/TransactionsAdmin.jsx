@@ -14,7 +14,7 @@ function TransactionsAdmin() {
   const fetchTransactions = () => {
     setLoading(true);
 
-    fetch(`http://localhost:8081/processor-transaction-api/getAllTransactions?page=${page}&size=${pageSize}`)
+    fetch(`http://localhost:8081/processortransactionapi/getAllTransactions?page=${page}&size=${pageSize}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Error al cargar los datos');
@@ -46,7 +46,7 @@ function TransactionsAdmin() {
     if (!transaction) return;
 
     try {
-      const response = await fetch(`http://localhost:8081/processor-transaction-api/updateEstatusTransaction`, {
+      const response = await fetch(`http://localhost:8081/processortransactionapi/updateEstatusTransaction`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
