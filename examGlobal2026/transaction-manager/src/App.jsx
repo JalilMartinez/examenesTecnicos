@@ -1,11 +1,11 @@
 
 import './App.css'
 import { Routes, Route } from 'react-router-dom';
-import Login from './components/Login.jsx';
-import Layout from './components/Layout.jsx';
-import TransactionAdmin from './components/TransactionsAdmin.jsx';
-import TransactionsRegister from './components/TransactionsRegister.jsx';
-import ProtectedRoute from './components/ProtectedRoute.jsx';
+import Layout from './components/router/Layout.jsx';
+import TransactionAdmin from './components/transactions/TransactionsAdmin.jsx';
+import TransactionsRegister from './components/transactions/TransactionsRegister.jsx';
+import ProtectedRoute from './components/router/ProtectedRoute.jsx';
+import Login from './components/auth/Login.jsx';
 
 
 function App() {

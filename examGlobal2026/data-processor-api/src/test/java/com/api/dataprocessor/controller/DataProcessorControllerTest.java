@@ -3,6 +3,7 @@ package com.api.dataprocessor.controller;
 import com.api.dataprocessor.model.dto.TransactionRequestDto;
 import com.api.dataprocessor.model.dto.TransactionResponseDto;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class DataProcessorControllerTest {
 
-    private final DataProcessorController dataProcessorController;
+    @Autowired
+    private DataProcessorController dataProcessorController;
 
-    public DataProcessorControllerTest(DataProcessorController dataProcessorController){
-        this.dataProcessorController = dataProcessorController;
-    }
     @Test
     public void processTransactionFailTest(){
         TransactionRequestDto transactionRequestDto = new TransactionRequestDto();
