@@ -4,6 +4,7 @@ import com.api.validator.model.dto.TransactionRequestDto;
 import com.api.validator.model.dto.TransactionResponseDto;
 import com.api.validator.service.HashService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 public class ValidatorControllerTest {
 
-    private final ValidatorController validatorController;
-    private final HashService hashService;
+    @Autowired
+    private ValidatorController validatorController;
+    @Autowired
+    private HashService hashService;
 
-    public ValidatorControllerTest(ValidatorController validatorController, HashService hashService){
-        this.validatorController = validatorController;
-        this.hashService = hashService;
-    }
     @Test
     public void doTransactionTest(){
         TransactionRequestDto transactionRequestDto = new TransactionRequestDto();

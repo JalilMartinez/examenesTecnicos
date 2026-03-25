@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class DataProcessorControllerTest {
-
     @Autowired
     private DataProcessorController dataProcessorController;
 

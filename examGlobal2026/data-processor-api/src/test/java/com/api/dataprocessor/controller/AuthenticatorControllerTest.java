@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class AuthenticatorControllerTest {
-
     @Autowired
     private  AuthenticatorController authenticatorController;
 
