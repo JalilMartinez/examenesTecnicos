@@ -24,7 +24,8 @@ public class ValidationService {
             transactionOutcome.setMessage("No se pudo comprobar la integridad de los datos");
             return transactionOutcome;
         }
-        transactionOutcome.setTransactionResponse(feingClient.processTransaction(transactionRequestDto));
+        transactionOutcome.setMessage("Cuerpo valido");
+        //transactionOutcome.setTransactionResponse(feingClient.processTransaction(transactionRequestDto));
         return transactionOutcome;
     }
     private boolean validateKey(TransactionRequestDto transactionRequestDto) {

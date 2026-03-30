@@ -8,6 +8,8 @@ public class UserOutcome {
     private boolean correct;
     private User user;
     private StringBuilder message;
+    private String token;
+
 
     public UserOutcome(){}
     public UserOutcome(boolean isCorrect){

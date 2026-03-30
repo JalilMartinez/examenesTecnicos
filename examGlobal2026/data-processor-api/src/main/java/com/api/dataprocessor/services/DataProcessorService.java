@@ -10,6 +10,7 @@ import com.api.dataprocessor.model.dto.*;
 import com.api.dataprocessor.model.entity.*;
 import com.api.dataprocessor.model.mapper.TransactionMapper;
 import com.api.dataprocessor.repository.TransactionRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Random;
 
-
+@Slf4j
 @Service
 public class DataProcessorService {
 
@@ -31,10 +32,12 @@ public class DataProcessorService {
     public TransactionOutcomeResponse doTransaction(TransactionRequestDto transactionRequestDto){
         TransactionOutcomeResponse transactionOutcome = new TransactionOutcomeResponse(true);
         if(Objects.isNull(transactionRequestDto.getFirma())){
+            log.error("[DataProcessorService] Cuerpo de la transaccion vacio o nulo");
             setTransactionOutcomeError(transactionOutcome, "Cuerpo de transacción vacio");
             return transactionOutcome;
         }
         String referencia = generateReferencia();
+
         TransactionEntity entity = transactionMapper.mapRequestToTransactionEntitiy(transactionRequestDto,referencia);
         try {
             entity = transactionRepository.save(entity);
@@ -44,6 +47,7 @@ public class DataProcessorService {
         transactionOutcome.setTransactionResponseDto(transactionMapper.mapTransactionEntityToTransactionResponse(entity));
         if (transactionOutcome.getTransactionResponseDto().getId()==0) {
             setTransactionOutcomeError(transactionOutcome, "transccion no guardada");
+            log.error("[DataProcessorService] Transccion no guardada");
         }
         return transactionOutcome;
     }

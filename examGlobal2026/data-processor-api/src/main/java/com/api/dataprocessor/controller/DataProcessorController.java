@@ -7,6 +7,8 @@ import com.api.dataprocessor.model.TransactionOutcomeResponse;
 import com.api.dataprocessor.model.dto.*;
 import com.api.dataprocessor.services.DataProcessorService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,19 +20,23 @@ import java.util.Map;
 public class DataProcessorController {
 
     private final DataProcessorService dataProcessorService;
+    public static final Logger log = LoggerFactory.getLogger(AuthenticatorController.class);
+
 
     public DataProcessorController (DataProcessorService dataProcessorService){
         this.dataProcessorService = dataProcessorService;
     }
 
-    @PostMapping("")
+    @PostMapping("/save")
     public ResponseEntity<?> processTransaction (@Valid @RequestBody TransactionRequestDto transactionRequestDto){
+        log.info("[authenticateUser] Recibida solicitud para procesar transaccion cliente : {}, importe : {}, operacion : {}",transactionRequestDto.getCliente(),transactionRequestDto.getImporte(),transactionRequestDto.getOperacion());
         TransactionOutcomeResponse transactionOutcome = dataProcessorService.doTransaction(transactionRequestDto);
         if (!transactionOutcome.isCorrect()){
             return ResponseEntity.badRequest().body( Map.of(
                     "message",transactionOutcome.getMessage()
             ));
         }
+        log.info("[transactionRepository.save] Transaccion guardada con id : {}", transactionOutcome.getTransactionResponseDto().getId());
         return ResponseEntity.ok(transactionOutcome.getTransactionResponseDto());
     }
 

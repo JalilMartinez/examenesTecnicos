@@ -4,14 +4,16 @@ import com.api.validator.model.TransactionOutcome;
 import com.api.validator.model.dto.TransactionRequestDto;
 import com.api.validator.service.ValidationService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@Slf4j
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
-@RequestMapping("/savetransactionapi")
+@RequestMapping("/validate")
 public class ValidatorController {
 
     private final ValidationService validationService;
@@ -30,6 +32,7 @@ public class ValidatorController {
                     "data", transactionOutcome.getTransactionResponse()
             ));
         }
-        return ResponseEntity.ok(transactionOutcome.getTransactionResponse());
+        System.out.println("listo");
+        return ResponseEntity.ok(transactionOutcome.getMessage());
     }
 }

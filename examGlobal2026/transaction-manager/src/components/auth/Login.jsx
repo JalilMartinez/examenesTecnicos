@@ -43,6 +43,7 @@ function Login() {
         throw new Error('Credenciales incorrectass');
       }
       localStorage.setItem('authenticated', 'true');
+      localStorage.setItem('token',data.token)
       navigate('/dashboard/register');
     } catch (err) {
       setError(err.message);

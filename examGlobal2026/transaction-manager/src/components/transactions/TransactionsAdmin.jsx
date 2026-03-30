@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import Swal from "sweetalert2";
+import { fetchPageTransactions, updateTransactionStatus } from '../services/transactionService';
 
 function TransactionsAdmin() {
   const [transactions, setTransactions] = useState([]);
@@ -14,14 +15,7 @@ function TransactionsAdmin() {
   const fetchTransactions = () => {
     setLoading(true);
 
-    fetch(`http://localhost:8081/processortransactionapi/getAllTransactions?page=${page}&size=${pageSize}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error al cargar los datos');
-        }
-        return response.json();
-      })
-      .then(data => {
+    fetchPageTransactions(page,pageSize).then(data => {
         setTransactions(data.entityList);     // lista
         setRowCount(data.totalElements);      // total
         setLoading(false);
@@ -46,27 +40,7 @@ function TransactionsAdmin() {
     if (!transaction) return;
 
     try {
-      const response = await fetch(`http://localhost:8081/processortransactionapi/updateEstatusTransaction`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: transaction.id,
-          referencia: transaction.referencia,
-          estatus: 'Cancelada' 
-        }),
-      });
-      if (!response.ok) {
-        swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'No se pudo cancelar la transacción',
-        });
-        throw new Error('Error al cancelar la transacción');
-      }
-      const updatedTransaction = await response.json();
-      // Actualizar el estatus en la lista
+      const  updatedTransaction = await updateTransactionStatus(transaction.id, transaction.referencia, 'Cancelada');
       setTransactions(transactions.map(t => 
         t.id === id ? { ...t, estatus: updatedTransaction.estatus } : t
       ));
