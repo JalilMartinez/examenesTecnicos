@@ -3,6 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import Swal from "sweetalert2";
 import { fetchPageTransactions, updateTransactionStatus } from '../services/transactionService';
+import { useAuth0 } from "@auth0/auth0-react";
 
 function TransactionsAdmin() {
   const [transactions, setTransactions] = useState([]);
@@ -12,10 +13,12 @@ function TransactionsAdmin() {
   const [pageSize, setPageSize] = useState(5);
   const [rowCount, setRowCount] = useState(0);
   
-  const fetchTransactions = () => {
-    setLoading(true);
+const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
-    fetchPageTransactions(page,pageSize).then(data => {
+  const fetchTransactions = async () => {
+    setLoading(true);
+    const token = await getAccessTokenSilently();
+    fetchPageTransactions(page,pageSize,token).then(data => {
         setTransactions(data.entityList);     // lista
         setRowCount(data.totalElements);      // total
         setLoading(false);
@@ -24,7 +27,7 @@ function TransactionsAdmin() {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'No se pudo obtener las transacciones',
+          text: err.message,
         });
         setError(err.message);
         setLoading(false);
@@ -40,7 +43,8 @@ function TransactionsAdmin() {
     if (!transaction) return;
 
     try {
-      const  updatedTransaction = await updateTransactionStatus(transaction.id, transaction.referencia, 'Cancelada');
+      const token = await getAccessTokenSilently();
+      const  updatedTransaction = await updateTransactionStatus(transaction.id, transaction.referencia, 'Cancelada',token);
       setTransactions(transactions.map(t => 
         t.id === id ? { ...t, estatus: updatedTransaction.estatus } : t
       ));

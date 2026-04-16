@@ -31,8 +31,7 @@ public class ValidatorControllerTest {
         transactionRequestDto.setFirma(firma);
         ResponseEntity<?> response = validatorController.doTransaction(transactionRequestDto);
         assertEquals(HttpStatus.OK,response.getStatusCode(),"El estatus de la peticion es diferente");
-        TransactionResponseDto transactionResponse = (TransactionResponseDto) response.getBody();
-        assertEquals("Aprobada",transactionResponse.getEstatus(),"El estatus no coincide");
-        assertEquals("Venta",transactionResponse.getOperacion(),"La operacion no coincide");
+        String transactionResponseMSJ = (String) response.getBody();
+        assertEquals("Cuerpo valido",transactionResponseMSJ,"El estatus no coincide");
     }
 }

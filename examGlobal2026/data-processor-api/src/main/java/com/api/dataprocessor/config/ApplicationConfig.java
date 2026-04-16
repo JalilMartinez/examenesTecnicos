@@ -26,12 +26,13 @@ public class ApplicationConfig {
     // 2. Definimos el motor de autenticación (EL QUE TE FALTA)
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService());
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+        authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
-        System.out.println("validamos contraseña por authenticationprovider");
+
         return authProvider;
     }
-
     // 3. Este sirve para que tu controlador de Login pueda usar el Manager de Spring
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {

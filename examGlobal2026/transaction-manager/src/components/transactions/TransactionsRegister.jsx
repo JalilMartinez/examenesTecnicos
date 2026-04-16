@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import Swal from "sweetalert2"
+import { useAuth0 } from "@auth0/auth0-react";
 function TransactionsRegister() {
   const [operacion, setOperacion] = useState('')
   const [importe, setImporte] = useState('')
   const [cliente, setCliente] = useState('')
-
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
   const enviar = async () => {
     console.log("enviando ...");
     
@@ -21,17 +22,19 @@ function TransactionsRegister() {
       firma
     }
     try {
-      const token  = localStorage.getItem('token')
-      const response = await fetch('http://localhost:8081/processortransactionapi', {
+      const token = await getAccessTokenSilently();
+      const response = await fetch('http://localhost:8080/processortransactionapi/save', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization' : `Bearer ${token}`
+           Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(transactionData)
       })
       if (response.ok) {
         const result = await response.json()
+        console.log("respuesta" + result);
+        
         Swal.fire({
           icon: 'success',
           title: 'Transacción registrada',
@@ -56,7 +59,7 @@ function TransactionsRegister() {
         });
       }
     } catch (error) {
-      swal.fire({
+      Swal.fire({
         icon: 'error',
         title: 'Error',
         text: 'Error al registrar la transacción',

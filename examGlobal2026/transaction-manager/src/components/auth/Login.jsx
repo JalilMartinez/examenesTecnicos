@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function Login() {
   const [userName, setUser] = useState('');
@@ -16,7 +17,7 @@ function Login() {
 
     try {
             
-      const response = await fetch('http://localhost:8081/auth/authenticateUser', { 
+      const response = await fetch('http://localhost:8080/auth/authenticateUser', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,10 +53,12 @@ function Login() {
     }
   };
 
+  const { loginWithRedirect } = useAuth0();
+
   return (
     <div className="form-container">
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div className="form-group">
           <label>Usuario:</label>
           <input
@@ -74,7 +77,7 @@ function Login() {
             required
           />
         </div>
-        <button type="submit" disabled={loading}>
+        <button type="button" disabled={loading} onClick={() => loginWithRedirect()}>
           {loading ? 'Cargando...' : 'Iniciar Sesión'}
         </button>
         

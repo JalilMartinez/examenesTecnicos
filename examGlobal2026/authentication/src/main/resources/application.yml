@@ -1,0 +1,10 @@
+server:
+  port: 8085
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-xjsdws42csm43zql.us.auth0.com/
+          audiences: https://dev-xjsdws42csm43zql.us.auth0.com/api/v2/

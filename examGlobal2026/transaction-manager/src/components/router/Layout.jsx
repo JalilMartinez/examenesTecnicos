@@ -1,10 +1,17 @@
 import React from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { useAuth0 } from "@auth0/auth0-react";
 
 function Layout() {
+   const { logout } = useAuth0();
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    logout({
+          logoutParams: {
+            returnTo: window.location.origin
+          }
+        });
     localStorage.removeItem('authenticated');
     navigate('/');
   };

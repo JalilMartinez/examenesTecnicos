@@ -67,13 +67,15 @@ public class DataProcessorService {
         TransactionOutcomeEntityListDto transactionOutcome = new TransactionOutcomeEntityListDto(true);
         if(size==0){
             setTransactionOutcomeError(transactionOutcome, "Paginador vacio");
+            log.error("[DataProcessorService] Parametros de la transaccion vacio o nulo");
         }
         Pageable pageable = PageRequest.of(page,size);
+        log.info("[DataProcessorService] Se prepara pager para consultar lista de elementos, size : {}, page : {}",size,page);
         try{
             Page<TransactionEntity> transactionEntities = transactionRepository.findAll(pageable);
             transactionOutcome.setEntityList(transactionEntities.getContent());
             if (transactionOutcome.getEntityList().isEmpty()){
-                setTransactionOutcomeError(transactionOutcome,"No se pudieron obtener las transacciones");
+                setTransactionOutcomeError(transactionOutcome,"No se pudieron obtener las transacciones: No hay registros");
             }
             transactionOutcome.setTotalPages(transactionEntities.getTotalPages());
             transactionOutcome.setCurrentPage(transactionEntities.getNumber());
@@ -88,9 +90,11 @@ public class DataProcessorService {
     public TransactionOutcomeResponse updateEstatusTransaction(EntityToUpdate entityToUpdate){
         TransactionOutcomeResponse transactionOutcome = new TransactionOutcomeResponse(true);
         if(Objects.isNull(entityToUpdate.getEstatus())){
+            log.error("[DataProcessorService] Parametros de la transaccion vacio o nulo");
             setTransactionOutcomeError(transactionOutcome,"Datos peticion update vacios");
             return transactionOutcome;
         }
+        log.info("[DataProcessorService] Se prepara update estatus para transaccion, id : {}, estatus : {}",entityToUpdate.getId(),entityToUpdate.getEstatus());
         TransactionEntity transactionEntity = transactionRepository.findById(entityToUpdate.getId()).orElseThrow(()-> new ResourceNotFoundException("Transaccion no encontrada"));
         transactionEntity.setEstatus(entityToUpdate.getEstatus());
         TransactionEntity transactionSaved;
@@ -99,7 +103,6 @@ public class DataProcessorService {
         }catch (Exception e){
             throw new TransactionSaveException("Ocurrio un error al guardar la modificación",e);
         }
-
         transactionOutcome.setTransactionResponseDto(transactionMapper.mapTransactionEntityToTransactionResponse(transactionSaved));
         return transactionOutcome;
     }

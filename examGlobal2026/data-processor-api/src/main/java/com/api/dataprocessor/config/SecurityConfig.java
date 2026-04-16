@@ -19,38 +19,29 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    JwtAuthenticationFilter jwtAuthFilter;
+//   ❌ @Autowired
+//   ❌ JwtAuthenticationFilter jwtAuthFilter;
     @Autowired
     AuthenticationProvider authenticationProvider;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/auth/**").permitAll() // Público para login
-                        .requestMatchers("/processortransactionapi/**").authenticated()
+                        .requestMatchers("/processortransactionapi/**").permitAll() //se quita este para evitar que autentique token ❌.authenticated()
                         .anyRequest().authenticated() // ¡TODO LO DEMÁS BLOQUEADO!
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Sin sesiones
-                )
-                .authenticationProvider(authenticationProvider) // El que creamos antes
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // <--- CLAVE
+                );
+        //Comentamos la validacion de token para usar auth0 en el gateway, la parte del login quedaria inutilizada
+                //❌.authenticationProvider(authenticationProvider) // El que creamos antes
+                //❌.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // <--- CLAVE
 
         return http.build();
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173","http://localhost:8080"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+
 }

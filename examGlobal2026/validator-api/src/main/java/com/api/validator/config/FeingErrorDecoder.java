@@ -1,10 +1,10 @@
 package com.api.validator.config;
 
 import com.api.validator.handlerException.TransactionSaveException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Response;
 import feign.codec.ErrorDecoder;
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +19,7 @@ public class FeingErrorDecoder implements ErrorDecoder {
             try(InputStream bodyIs = response.body().asInputStream()){
                 JsonNode jsonNode = objectMapper.readTree(bodyIs);
                 if(jsonNode.has("message")){
-                    message=jsonNode.get("message").asString();
+                    message=jsonNode.get("message").asText();
                 }
             }catch (IOException e){
                 message = response.reason()!= null ? response.reason():message;

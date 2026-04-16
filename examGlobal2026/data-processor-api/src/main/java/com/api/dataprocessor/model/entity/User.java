@@ -2,7 +2,6 @@ package com.api.dataprocessor.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,11 +12,14 @@ import java.util.List;
 @Data
 @Table(name="userPass")
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     @Column(unique = true, nullable = false)
     private String userName;
+
     private String psw;
 
     public User() {}
@@ -27,14 +29,13 @@ public class User implements UserDetails {
         this.psw = psw;
     }
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(); // sin roles por ahora
     }
 
     @Override
-    public @Nullable String getPassword() {
+    public String getPassword() {
         return psw;
     }
 
@@ -45,21 +46,21 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return true;
     }
 }
